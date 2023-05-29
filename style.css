@@ -1,0 +1,33 @@
+#card-action {
+  color: aqua;
+}
+
+#temp-1,
+#wind-1,
+#humid-1 {
+  color: orange;
+}
+#temp-2,
+#wind-2,
+#humid-2 {
+  color: lightcoral;
+}
+#temp-3,
+#wind-3,
+#humid-3 {
+  color: lightblue;
+}
+#temp-4,
+#wind-4,
+#humid-4 {
+  color: lightgreen;
+}
+#temp-5,
+#wind-5,
+#humid-5 {
+  color: lavender;
+}
+
+#brand-logo {
+  padding: 20px;
+}

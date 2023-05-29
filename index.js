@@ -28,6 +28,7 @@ document.getElementById("date-5").textContent = dayjs()
 submitBtn.addEventListener("click", function (event) {
   event.preventDefault();
   cityName = document.getElementById("city-name").value;
+
   getCityData();
 });
 
@@ -46,6 +47,7 @@ const searchHistory = JSON.parse(localStorage.getItem("searchHistory")) || [];
 // for every item in the search history, create an li with a button
 searchHistory.forEach(function (item) {
   const li = document.createElement("button");
+  li.setAttribute("class", "waves-effect waves-light btn");
   li.value = item;
   li.textContent = item;
   citySearchHistoryList.appendChild(li);
@@ -60,6 +62,7 @@ submitBtn.addEventListener("click", function (event) {
   localStorage.setItem("searchHistory", JSON.stringify(searchHistory));
   // Append the searched item to the history list
   let li = document.createElement("button");
+  li.setAttribute("class", "waves-effect waves-light btn");
   li.value = searched;
   li.textContent = searched;
   citySearchHistoryList.appendChild(li);
