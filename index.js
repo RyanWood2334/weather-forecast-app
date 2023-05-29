@@ -66,6 +66,12 @@ submitBtn.addEventListener("click", function (event) {
   cityNameInput = "";
 });
 
+//need to tie in the clear storage button with an event listener
+var clearStorageBtn = document.getElementById("clear-storage");
+clearStorageBtn.addEventListener("click", function () {
+  localStorage.clear();
+});
+
 //fetches a city from the API, to build the URL's for the forecasts
 function getCityData() {
   let cityAPI =
@@ -120,6 +126,34 @@ function getWeatherData() {
       document.getElementById("cityname").textContent = cityCalled;
 
       document.getElementById("city-humid").textContent =
-        humidity + "% of humidity";
+        humidity + "% humidity";
+    });
+}
+
+function getFiveDayForecast() {
+  fetch(fiveAPI)
+    .then(function (response) {
+      return response.json();
+    })
+    .then(function (data) {
+      var forecast = [];
+      forecast = data;
+
+      //this loop gets the element by the id and changes the text to correct weather parameters
+      for (let i = 1; i < 6; i++) {
+        var temperature = forecast.list[i].main.temp;
+        var newTemp = ((temperature - 273.15) * 9) / 5 + 32;
+        var realTeam = Math.trunc(newTemp);
+        // console.log(temprature)
+        var wind = forecast.list[i].wind.speed * 2.237;
+        var realWind = Math.trunc(wind);
+        var humidity = forecast.list[i].main.humidity;
+        document.getElementById("temp-" + [i]).textContent =
+          realTeam + "° Fahrenheit";
+        document.getElementById("wind-" + [i]).textContent =
+          realWind + " MPH wind(s)";
+        document.getElementById("humid-" + [i]).textContent =
+          humidity + "% humidity";
+      }
     });
 }
