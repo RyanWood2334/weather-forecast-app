@@ -1,4 +1,5 @@
 // Define variables
+let cityNameInput = document.getElementById("#city-name");
 let cityName = "";
 let submitBtn = document.getElementById("submit-button");
 let longitude = "";
@@ -31,7 +32,7 @@ submitBtn.addEventListener("click", function (event) {
 });
 
 // Add an event listener to each city retrieved from local storage
-historyList.addEventListener("click", function (event) {
+citySearchHistoryList.addEventListener("click", function (event) {
   event.preventDefault();
   if (event.target.tagName === "BUTTON") {
     cityName = event.target.value;
@@ -47,9 +48,25 @@ searchHistory.forEach(function (item) {
   const li = document.createElement("button");
   li.value = item;
   li.textContent = item;
-  historyList.appendChild(li);
+  citySearchHistoryList.appendChild(li);
 });
 
+submitBtn.addEventListener("click", function (event) {
+  event.preventDefault();
+  let searched = document.getElementById("city-name").value;
+  // Add the searched item to the search history
+  searchHistory.push(searched);
+  // Save the search history to local storage
+  localStorage.setItem("searchHistory", JSON.stringify(searchHistory));
+  // Append the searched item to the history list
+  let li = document.createElement("button");
+  li.value = searched;
+  li.textContent = searched;
+  citySearchHistoryList.appendChild(li);
+  cityNameInput = "";
+});
+
+//fetches a city from the API, to build the URL's for the forecasts
 function getCityData() {
   let cityAPI =
     "https://api.openweathermap.org/geo/1.0/direct?q=" +
@@ -78,5 +95,31 @@ function getCityData() {
 
       getWeatherData();
       getFiveDayForecast();
+    });
+}
+
+function getWeatherData() {
+  fetch(weatherAPI)
+    .then(function (response) {
+      return response.json();
+    })
+    .then(function (data) {
+      var temperature = data.main.temp;
+      var newTemp = ((temperature - 273.15) * 9) / 5 + 32;
+      var realTeam = Math.trunc(newTemp);
+      // console.log(temperature)
+      var wind = data.wind.speed * 2.237;
+      var realWind = Math.trunc(wind);
+      var humidity = data.main.humidity;
+      var cityCalled = data.name;
+      document.getElementById("city-temp").textContent =
+        realTeam + "° Fahrenheit";
+      document.getElementById("city-wind").textContent =
+        realWind + " MPH wind(s)";
+
+      document.getElementById("cityname").textContent = cityCalled;
+
+      document.getElementById("city-humid").textContent =
+        humidity + "% of humidity";
     });
 }
